@@ -15,9 +15,7 @@ def show_images(data):
 		include them in your report
 	"""
 	### YOUR CODE HERE
-
-
-
+	
 	### END YOUR CODE
 
 
@@ -34,9 +32,9 @@ def show_features(X, y, save=True):
 		in your report.
 	"""
 	### YOUR CODE HERE
-
-
-
+	plt.plot(X,y,'o',color='black')
+	plt.show()
+	plt.savefig('train_features.png')
 	### END YOUR CODE
 
 
