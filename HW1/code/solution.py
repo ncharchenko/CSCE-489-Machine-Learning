@@ -15,9 +15,11 @@ def show_images(data):
                 include them in your report
         """
         ### YOUR CODE HERE
-        plt.imshow(data[0])
+        print("Image 1")
+        #plt.imshow(data[0])
         plt.imsave('image_1.png',data[0])
-        plt.imshow(data[1])
+        print("Image 2")
+        #plt.imshow(data[1])
         plt.imsave('image_2.png',data[1])
         ### END YOUR CODE
 
@@ -35,7 +37,10 @@ def show_features(X, y, save=True):
                 in your report.
         """
         ### YOUR CODE HERE
-        plt.scatter(X,y,c=y)
+        plt.scatter(X[:,0],X[:,1],c=y)
+        plt.title("Features Scatter Plot")
+        plt.xlabel('x-features')
+        plt.ylabel('y-features')
         plt.show()
         plt.savefig('train_features.png')
         ### END YOUR CODE
