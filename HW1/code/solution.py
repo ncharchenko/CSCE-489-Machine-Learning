@@ -41,8 +41,8 @@ def show_features(X, y, save=True):
         plt.title("Features Scatter Plot")
         plt.xlabel('x-features')
         plt.ylabel('y-features')
-        plt.show()
         plt.savefig('train_features.png')
+        plt.show()
         ### END YOUR CODE
 
 
