@@ -43,7 +43,7 @@ def show_features(X, y, save=True):
         plt.ylabel('y-features')
         if save == True:
             plt.savefig('train_features.png')
-        plt.show()
+            plt.show()
         ### END YOUR CODE
 
 
@@ -139,11 +139,14 @@ def show_result(X, y, W):
                 in your report.
         """
         ### YOUR CODE HERE
-        x = len(X[0])
-        formula = "(-(W[0] / W[2]) / (W[0] / W[1]))*x + (-W[0] / W[2])"
-        Y = eval(formula)
+        decision_plot = []
+        for i,x in enumerate(X):
+            decision_plot.append(W[1]*X[i,0]+ W[2]*X[i,1] + W[0])
+        plt.xlim(-1,0)
+        plt.ylim(-1,0)
+        plt.axis([-1,0,-1,0])
+        plt.scatter(X[:,0],decision_plot)
         show_features(X,y,False)
-        plt.plot(x,Y)
         plt.show()
         
         ### END YOUR CODE
