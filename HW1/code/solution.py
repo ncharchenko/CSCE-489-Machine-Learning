@@ -41,7 +41,8 @@ def show_features(X, y, save=True):
         plt.title("Features Scatter Plot")
         plt.xlabel('x-features')
         plt.ylabel('y-features')
-        plt.savefig('train_features.png')
+        if save == True:
+            plt.savefig('train_features.png')
         plt.show()
         ### END YOUR CODE
 
@@ -62,8 +63,13 @@ class Perceptron(object):
                         self: Returns an instance of self.
                 """
                 ### YOUR CODE HERE
-                
+                self.W = np.zeros(len(X[0]))
 
+                for t in range(self.max_iter):
+                    for i, x in enumerate(X):
+                        if (np.dot(self.W,X[i])*y[i]) <= 0:
+                            self.W = self.W + X[i]*y[i]
+                
 
                 ### END YOUR CODE
                 
@@ -90,9 +96,10 @@ class Perceptron(object):
                         preds: An array of shape [n_samples,]. Only contains 1 or -1.
                 """
                 ### YOUR CODE HERE
-
-
-
+                preds = []
+                for i, x in enumerate(X):
+                    preds.append(np.sign(np.dot(self.W,X[i])))
+                return preds
                 ### END YOUR CODE
 
         def score(self, X, y):
@@ -106,9 +113,13 @@ class Perceptron(object):
                         score: An float. Mean accuracy of self.predict(X) wrt. y.
                 """
                 ### YOUR CODE HERE
-
-
-
+                num_samples = len(y)
+                correct_preds = 0
+                preds = self.predict(X)
+                for i,x in enumerate(X):
+                    if preds[i] == y[i]:
+                        correct_preds += 1
+                return correct_preds/num_samples
                 ### END YOUR CODE
 
 
@@ -128,9 +139,13 @@ def show_result(X, y, W):
                 in your report.
         """
         ### YOUR CODE HERE
-
-
-
+        x = len(X[0])
+        formula = "(-(W[0] / W[2]) / (W[0] / W[1]))*x + (-W[0] / W[2])"
+        Y = eval(formula)
+        show_features(X,y,False)
+        plt.plot(x,Y)
+        plt.show()
+        
         ### END YOUR CODE
 
 
