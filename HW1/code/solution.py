@@ -15,12 +15,12 @@ def show_images(data):
                 include them in your report
         """
         ### YOUR CODE HERE
-        print("Image 1")
-        #plt.imshow(data[0])
+        f, axarr = plt.subplots(1,2)
+        axarr[0].imshow(data[0])
         plt.imsave('image_1.png',data[0])
-        print("Image 2")
-        #plt.imshow(data[1])
+        axarr[1].imshow(data[1])
         plt.imsave('image_2.png',data[1])
+        plt.show()
         ### END YOUR CODE
 
 
@@ -37,7 +37,19 @@ def show_features(X, y, save=True):
                 in your report.
         """
         ### YOUR CODE HERE
-        plt.scatter(X[:,0],X[:,1],c=y)
+        xaxis = X[:,0]
+        yaxis = X[:,1]
+        colors = []
+        shapes = []
+        for j in y:
+            if j == -1:
+                colors.append('r')
+                shapes.append('*')
+            else:
+                colors.append('b')
+                shapes.append('+')
+        for i in range(len(y)):
+            plt.scatter(xaxis[i],yaxis[i], marker=shapes[i], color=colors[i])
         plt.title("Features Scatter Plot")
         plt.xlabel('x-features')
         plt.ylabel('y-features')
@@ -145,6 +157,7 @@ def show_result(X, y, W):
         plt.xlim(-1,0)
         plt.ylim(-1,0)
         plt.axis([-1,0,-1,0])
+        plt.title('Perceptron Fit')
         plt.scatter(X[:,0],decision_plot)
         show_features(X,y,False)
         plt.show()
