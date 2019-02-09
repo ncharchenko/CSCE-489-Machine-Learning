@@ -42,7 +42,7 @@ def show_features(X, y, save=True):
         colors = []
         shapes = []
         for j in y:
-            if j == -1:
+            if j == 1:
                 colors.append('r')
                 shapes.append('*')
             else:
@@ -75,7 +75,7 @@ class Perceptron(object):
                         self: Returns an instance of self.
                 """
                 ### YOUR CODE HERE
-                self.W = np.zeros(len(X[0]))
+                self.W = np.ones(len(X[0]))
 
                 for t in range(self.max_iter):
                     for i, x in enumerate(X):
@@ -152,14 +152,19 @@ def show_result(X, y, W):
         """
         ### YOUR CODE HERE
         decision_plot = []
-        for i,x in enumerate(X):
-            decision_plot.append(W[1]*X[i,0]+ W[2]*X[i,1] + W[0])
+        slope = -W[1]/W[2]
+        y_int = -W[0]/W[2]
+        x_coords = np.linspace(min(X[:,0]),max(X[:,0]),500)
+        y_coords = slope * x_coords + y_int
+        #for i,x in enumerate(X):
+        #    decision_plot.append(W[1]*X[i,0]+ W[2]*X[i,1] + W[0])
         plt.xlim(-1,0)
         plt.ylim(-1,0)
         plt.axis([-1,0,-1,0])
-        plt.title('Perceptron Fit')
-        plt.scatter(X[:,0],decision_plot)
+        plt.plot(x_coords,y_coords, '-g')
         show_features(X,y,False)
+        plt.title('Perceptron Fit')
+        plt.savefig('result.png')
         plt.show()
         
         ### END YOUR CODE
