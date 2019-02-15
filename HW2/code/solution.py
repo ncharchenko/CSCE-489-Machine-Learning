@@ -13,9 +13,12 @@ def third_order(X):
 		poly: An (numpy) array with shape [n_samples, 10].
 	"""
 	### YOUR CODE HERE
-
-
-
+	for i in range(len(X[:,0]):
+		x_1 = X[i,0]
+		x_2 = X[i,1]
+		transformed = np.array([1,x_1,x_2,x_1**2,x_1*x_2,x_2**2,x_1**3,x_1**2 * 2,x_1 * x_2**2,x_2**3])
+		np.append(poly,transformed)
+	return poly
 	### END YOUR CODE
 
 
