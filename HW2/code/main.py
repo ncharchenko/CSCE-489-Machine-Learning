@@ -1,5 +1,5 @@
 from helper import *
-from solution_sol import *
+from solution import *
 
 
 
@@ -30,8 +30,8 @@ if __name__ == '__main__':
 	X_train, y_train = load_features(traindataloc)
 	X_test, y_test = load_features(testdataloc)
 
-	print('Testing with Linear Logistic Regression: ')
-	test_logreg(X_train, y_train, X_test, y_test, False)
+	#print('Testing with Linear Logistic Regression: ')
+	#test_logreg(X_train, y_train, X_test, y_test, False)
 
-	print('Testing with 3rd order polynomial Logistic Regression: ')
+	#print('Testing with 3rd order polynomial Logistic Regression: ')
 	test_logreg(X_train, y_train, X_test, y_test, True)
