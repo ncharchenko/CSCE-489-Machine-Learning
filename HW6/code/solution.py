@@ -1,7 +1,12 @@
 import tensorflow as tf
 import numpy as np
 import pickle, tqdm, os
+import time
 
+def unpickle(file):
+    with open(file, 'rb') as fo:
+        dict = pickle.load(fo, encoding='bytes')
+    return dict
 
 def load_data(data_dir):
     '''
@@ -25,6 +30,44 @@ def load_data(data_dir):
         y_test: An numpy array of shape [10000,].
             (dtype=np.int64)
     '''
+    negatives = False
+    meta_data_dict = unpickle(data_dir + "batches.meta")
+    cifar_label_names = meta_data_dict[b'label_names']
+    cifar_label_names = np.array(cifar_label_names)
+
+    x_train = []
+    train_filenames = []
+    y_train = []
+
+    for i in range(1, 6):
+        train_data_dict = unpickle(data_dir + "/data_batch_{}".format(i))
+        if i == 1:
+            x_train = train_data_dict[b'data']
+        else:
+            x_train = np.vstack((x_train, train_data_dict[b'data']))
+        train_filenames += train_data_dict[b'filenames']
+        y_train += train_data_dict[b'labels']
+
+    x_train = x_train.reshape((len(x_train), 3, 32, 32))
+    if negatives:
+        x_train = x_train.transpose(0, 2, 3, 1).astype(np.uint8)
+    else:
+        x_train = np.rollaxis(x_train, 1, 4)
+    train_filenames = np.array(train_filenames)
+    y_train = np.array(y_train).astype(np.uint64)
+
+    test_data_dict = unpickle(data_dir + "/test_batch")
+    x_test = test_data_dict[b'data']
+    test_filenames = test_data_dict[b'filenames']
+    y_test = test_data_dict[b'labels']
+
+    x_test = x_test.reshape((len(x_test), 3, 32, 32))
+    if negatives:
+        x_test = x_test.transpose(0, 2, 3, 1).astype(np.uint8)
+    else:
+        x_test = np.rollaxis(x_test, 1, 4)
+    test_filenames = np.array(test_filenames)
+    y_test = np.array(y_test).astype(np.uint64)
 
     return x_train, y_train, x_test, y_test
 
@@ -54,7 +97,8 @@ def preprocess(train_images, test_images, normalize=False):
         test_images: An numpy array of shape [10000, 32, 32, 3].
             (dtype=np.float64)
     '''
-
+    train_images = train_images * (1/255)
+    test_images = test_images * (1/255)
     return train_images, test_images
 
 
@@ -114,7 +158,19 @@ class LeNet_Cifar10():
         Returns:
             logits: Tensor of shape [None, n_classes].
         '''
-
+        o1 = tf.layers.conv2d(inputs=X,filters=6,kernel_size=(5,5),)
+        o1 = tf.nn.relu(o1)
+        o2 = tf.layers.max_pooling2d(o1, (2,2), 2)
+        o3 = tf.layers.conv2d(inputs=o2,filters=16,kernel_size=(5,5),)
+        o3 = tf.nn.relu(o3)
+        o4 = tf.layers.max_pooling2d(o3, (2,2), 2)
+        o5 = tf.layers.flatten(o4)
+        o6 = tf.layers.dense(o5,120)
+        o6 = tf.nn.relu(o6)
+        o7 = tf.layers.dense(o6,84)
+        o7 = tf.nn.relu(o7)
+        o8 = tf.layers.dense(o7, self.n_classes)
+        logits = tf.nn.softmax(o8)
         return logits
 
     def _setup(self):

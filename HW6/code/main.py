@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	model.train(x_train, y_train, x_valid, y_valid, 128, 20)
 
 	accuracy = model.test(x_test, y_test)
-    with open('test_result.txt', 'w') as f:
-        f.write(str(accuracy))
+	with open('test_result.txt', 'w') as f:
+		f.write(str(accuracy))
 
-    print('Test accuracy: %.4f' %accuracy)
+	print('Test accuracy: %.4f' %accuracy)
